@@ -13,19 +13,21 @@ export #
 AbstractD3Chart,
 LocalHost,
 ## chart types
-## MLineChart,
+MLineChart,
 VineTreeChart,
 ## VineGraph,
 ## additional functions
 chart,
 d3SymLink,
 iframe,
-renderHtml
+renderHtml,
+writeData
 
 include("ChartTypes/vineTreeChart.jl")
 include("ChartTypes/mlineChart.jl")
 include("localhost.jl")
 include("D3VizEmb.jl")
+include("D3VizExt.jl")
 include("resolvePaths.jl")
 include("abstractFuncs.jl")
 include("utils.jl")

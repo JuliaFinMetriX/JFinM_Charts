@@ -50,6 +50,10 @@ function assureDir(absDirPath::String)
     end
 end
 
+function relToAbs(path::String)
+    return normpath(joinpath(pwd(), path))
+end
+
 
 ## @doc doc"""
 ## Return data file name with name stem equal to output file.

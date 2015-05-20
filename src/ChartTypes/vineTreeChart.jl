@@ -17,7 +17,7 @@ VineTreeChart() = VineTreeChart("VineTreeChart",
                                 200, 500, 100, 12)
 
 function defaultDataNames(chrt::VineTreeChart)
-    return String["treeArrayData"]
+    return ["treeArrayData"]
 end
 
 ## customize and render chart
@@ -57,13 +57,13 @@ end
 ## call data with default js variable name
 function writeData(data::Array{Int, 2}, chrt::VineTreeChart)
     ## create JavaScript data with default name
-    return writeData(data, chrt, "treeArrayData")
+    return writeData(data, chrt, ["treeArrayData"])
 end
 
 ## call data with given js variable name
 function writeData(data::Array{Int, 2},
                    chrt::VineTreeChart,
-                   dataName::Array{String, 1})
+                   dataName::Array{ASCIIString, 1})
     if length(dataName) > 1
         error("one single data name is allowed")
     end

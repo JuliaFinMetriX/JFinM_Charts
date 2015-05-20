@@ -14,7 +14,7 @@ end
 ##################
 
 function D3VizEmb(data::Any, chrt::AbstractD3Chart,
-                  dataNames::Array{String, 1})
+                  dataNames::Array{ASCIIString, 1})
     dataCode = ""
     if !isempty(data)
         if !isempty(dataNames)
@@ -66,7 +66,8 @@ end
 @doc doc"""
 Write graphics to html file.
 """->
-function renderHtml(dviz::D3VizEmb, outPath::String, d3SrcDir::String)
+function renderHtml(dviz::AbstractD3Viz, outPath::String,
+                    d3SrcDir::String)
 
     ## output file
     ##------------
@@ -111,7 +112,8 @@ end
 Write graphics to html and open with localhost. Since there is no
 external data, file could also be opened without local server.
 """->
-function renderHtml(dviz::D3VizEmb, outPath::String, d3SrcDir::String,
+function renderHtml(dviz::AbstractD3Viz, outPath::String,
+                    d3SrcDir::String,
                     lh::LocalHost)
     outAbsPath = renderHtml(dviz, outPath, d3SrcDir)
 
