@@ -23,6 +23,7 @@ iframe,
 renderHtml
 
 include("ChartTypes/vineTreeChart.jl")
+include("ChartTypes/mlineChart.jl")
 include("localhost.jl")
 include("D3VizEmb.jl")
 include("resolvePaths.jl")

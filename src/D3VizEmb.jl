@@ -9,6 +9,10 @@ type D3VizEmb <: AbstractD3Viz
     code::String
 end
 
+##################
+## Constructors ##
+##################
+
 function D3VizEmb(data::Any, chrt::AbstractD3Chart,
                   dataNames::Array{String, 1})
     dataCode = ""
