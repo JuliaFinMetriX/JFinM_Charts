@@ -62,6 +62,9 @@ function render(dviz::D3VizEmb, outPath::String, d3SrcDir::String)
     return string(d3libCode, dviz.code)
 end
     
+###################################
+## renderHtml with dviz instance ##
+###################################
 
 @doc doc"""
 Write graphics to html file.
@@ -128,6 +131,40 @@ function renderHtml(dviz::AbstractD3Viz, outPath::String,
     run(`google-chrome $chartUrl`)
     return outAbsPath
 end
+
+
+####################################
+## renderHtml with data and chart ##
+####################################
+
+
+function renderHtml(data::Any, chrt::AbstractD3Chart,
+                    lh::LocalHost)
+    ## create random file
+    randPart = tempname()
+    outAbsPath = string(randPart, "_", chrt.chartType, ".html")
+    ## get default data names
+    dataPaths = defaultDataNames(outAbsPath, chrt)
+    ## create d3viz
+    d3viz = D3VizExt(data, chrt, dataPaths)
+    renderHtml(d3viz, outAbsPath, "")
+    
+    ## open file from localhost in browser
+    println("localhost: $(lh.path)")
+    println("html file: $outAbsPath")
+    outputRelToLH = relpath(outAbsPath, lh.path)
+
+    chartUrl = string("http://localhost:", lh.port, "/",
+                      outputRelToLH)
+    
+    run(`google-chrome $chartUrl`)
+    return outAbsPath
+end
+
+
+#############
+## vizHtml ##
+#############
 
 @doc doc"""
 Write graphics to html and open with google-chrome.

@@ -16,6 +16,20 @@ MLineChart() = MLineChart("MLineChart",
                           1,
                           900, 400, "lin", "")
 
+########################
+## default data names ##
+########################
+
+@doc doc"""
+Return default data names for MLineChart with given absolute output
+path. 
+"""->
+function defaultDataNames(outAbsPath::String, chrt::MLineChart)
+    ## get directory name of output
+    fileStem = split(outAbsPath, ".")[1]
+    return [string(fileStem, "_data.csv")]
+end
+
 ## customize and render chart
 ##---------------------------
 
