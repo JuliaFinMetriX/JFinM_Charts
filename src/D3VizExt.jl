@@ -63,7 +63,7 @@ end
 ## render ##
 ############
 
-function render(dviz::D3VizExt, outPath::String,
+function renderCode(dviz::D3VizExt, outPath::String,
                 d3SrcDir::String)
 
     outAbsPath = abspath(outPath)
