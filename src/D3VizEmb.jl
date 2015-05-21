@@ -38,6 +38,10 @@ function D3VizEmb(data::Any, chrt::AbstractD3Chart)
 end
 
 
+############
+## render ##
+############
+
 @doc doc"""
 Function render creates returns the full js code, with d3 library path
 relative to the output file.
@@ -137,27 +141,66 @@ end
 ## renderHtml with data and chart ##
 ####################################
 
+## notes: with localhost, output file resides in pwd()/tmp
+##
+## without localhost, D3VizEmb resides in /tmp
 
-function renderHtml(data::Any, chrt::AbstractD3Chart,
+@doc doc"""
+To visualize a graphics with external data files, the graphics needs
+to be rendered with a local server. Hence, we need to make sure that
+both data files and output file reside in subdirectories of localhost.
+"""->
+function vizHtml(data::Any, chrt::AbstractD3Chart,
                     lh::LocalHost)
-    ## create random file
-    randPart = tempname()
-    outAbsPath = string(randPart, "_", chrt.chartType, ".html")
-    ## get default data names
-    dataPaths = defaultDataNames(outAbsPath, chrt)
-    ## create d3viz
-    d3viz = D3VizExt(data, chrt, dataPaths)
-    renderHtml(d3viz, outAbsPath, "")
-    
-    ## open file from localhost in browser
-    println("localhost: $(lh.path)")
-    println("html file: $outAbsPath")
-    outputRelToLH = relpath(outAbsPath, lh.path)
 
-    chartUrl = string("http://localhost:", lh.port, "/",
-                      outputRelToLH)
+    ## check if pwd() is a subdirectory of lh
     
-    run(`google-chrome $chartUrl`)
+    
+    ## which type of chart: embedded or external data?
+    if chrt.extData
+        ## create random file in ./tmp/
+        randPart = tempname()
+        outRelPath = string(".", randPart, "_", chrt.chartType, ".html")
+        outAbsPath = abspath(outRelPath)
+
+        absTmpPath = abspath("./tmp/")
+        assureDir(dirname(absTmpPath))
+
+        ## get default data paths
+        absDataPaths = defaultDataNames(outAbsPath, chrt)
+        dataPaths = ASCIIString[relpath(outAbsPath, p) for p in absDataPaths]
+    else
+        ## create random file in /tmp
+        randPart = tempname()
+        outAbsPath = string(randPart, "_", chrt.chartType, ".html")
+
+        ## get default data names
+        dataPaths = defaultDataNames(outAbsPath, chrt)
+    end
+
+    ## create d3viz
+    if chrt.extData
+        d3viz = D3VizExt(data, chrt, dataPaths)
+    else
+        d3viz = D3VizEmb(data, chrt, dataPaths)
+    end
+
+    renderHtml(d3viz, outAbsPath, "")
+
+    ## open file
+    if chrt.extData
+        ## open file from localhost in browser
+        println("localhost: $(lh.path)")
+        println("html file: $outAbsPath")
+        outputRelToLH = relpath(outAbsPath, lh.path)
+
+        chartUrl = string("http://localhost:", lh.port, "/",
+                          outputRelToLH)
+    
+        run(`google-chrome $chartUrl`)
+    else
+        run(`google-chrome $outAbsPath`)
+    end
     return outAbsPath
 end
 
