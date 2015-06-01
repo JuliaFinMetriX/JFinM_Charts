@@ -147,6 +147,7 @@ robust copy of the code. Ideally, this should be removed as soon as I
 switch over to Julia 0.4.
 """->
 function relpath(path::String, startpath::String = ".")
+    ## (!isdirpath(startpath)) && throw(ArgumentError("`path` must be a directory"))
     isempty(path) && throw(ArgumentError("`path` must be specified"))
     isempty(startpath) && throw(ArgumentError("`startpath` must be specified"))
     path_separator_re = "/"

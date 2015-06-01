@@ -1,9 +1,7 @@
 module runtests
 
-tests = ["abstractFuncs_test.jl",
-         "utils_test.jl",
+tests = ["utils_test.jl",
          ## "mlineChart_test.jl",
-         "renderCode_test.jl",
          ## "jfinm_charts_test.jl",
          ## "resolvePaths_test.jl",
          ## "JFinM_Charts_usage.jl",

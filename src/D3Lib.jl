@@ -69,4 +69,5 @@ function d3SymLink(path::String)
     catch e
         print(e)
     end
+    return D3Lib(targetPath)
 end
