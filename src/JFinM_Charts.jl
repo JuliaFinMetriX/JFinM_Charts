@@ -31,11 +31,7 @@ include("D3Lib.jl")
 include("D3VizEmb.jl")
 include("D3VizExt.jl")
 include("d3viz.jl")
-include("resolvePaths.jl")
-include("abstractFuncs.jl")
 include("utils.jl")
-include("renderCode.jl")
-
 
 ## generic chart constructor
 ##--------------------------
