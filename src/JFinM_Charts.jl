@@ -1,7 +1,7 @@
 module JFinM_Charts
 
 ## list packages whos namespace is used
-using Docile
+VERSION < v"0.4-" && using Docile
 
 importall Base
 ## importall Stats
