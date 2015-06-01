@@ -2,7 +2,7 @@
 
 A Julia interface to using the jfinm_d3_charts library.
 
-- [![Build Status](https://travis-ci.org/JuliaFinMetriX/JFinM_Charts.svg?branch=master)](https://travis-ci.org/JuliaFinMetriX/JFinM_Charts.jl)
+- [![Build Status](https://travis-ci.org/JuliaFinMetriX/JFinM_Charts.svg?branch=master)](https://travis-ci.org/JuliaFinMetriX/JFinM_Charts)
 - [![Coverage Status](https://coveralls.io/repos/JuliaFinMetriX/JFinM_Charts/badge.svg)](https://coveralls.io/r/JuliaFinMetriX/JFinM_Charts)
 
 # Documentation
@@ -12,7 +12,8 @@ A Julia interface to using the jfinm_d3_charts library.
 # Description
 
 There are two different graphics:
-- graphics with embedded data: here data is included directly into the
+
+- graphics with embedded data: data is included directly into the
   javascript code, such that no external data file needs to be loaded.
   An html graphics hence consists of a single html output file, and
   viewing it does not require a local server.
@@ -20,9 +21,10 @@ There are two different graphics:
   reasons of performance, large data sets should be loaded from
   external files. This, however, complicates things, as html files are
   not allowed to load data from disk, so that any such html graphics
-  need to be viewed through some kind of server. This could either be
+  needs to be viewed through some kind of server. This could either be
   a local http server, the server provided by github pages, or an
   ipython notebook.
+
 
 - renderHtml with localhost:
 	- for `D3VizExt` instances the only way of directly viewing a chart
@@ -34,9 +36,10 @@ There are two different graphics:
 - vizHtml:
 	- create html output file and open in browser
 
-# 
+# Internal setup
 
-The most robust way to create a graphics is with the following steps:
+The most robust and internally used way to create a graphics is with
+the following steps:
 - create data
 - create customized chart instance
 - create AbstractD3Viz instance:
@@ -45,12 +48,12 @@ The most robust way to create a graphics is with the following steps:
 - render AbstractD3Viz instance:
 	- requires output path
 	- requires link to d3 library
-- view rendered output file:
+- view rendered output file (viz, embed):
 	- use local http server to view charts with external data files
+	- embed as iframe into notebook environments
 
 In addition, however, there exist some shortcuts for frequently used
-settings. They mainly can be splitted into disposable charts and
-output files that need to be kept.
+settings.
 
 ## Disposable charts
 

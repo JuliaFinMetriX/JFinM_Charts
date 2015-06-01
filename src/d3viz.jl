@@ -45,7 +45,7 @@ function render_dviz(dviz::AbstractD3Viz, outPath::String,
     
     close(fout)
 
-    return (outAbsPath, dviz)
+    return outAbsPath
 end
 
 ## render functions: user interface to create html graphics
