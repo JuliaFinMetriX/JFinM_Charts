@@ -15,7 +15,7 @@ There are two different graphics:
 - graphics with embedded data: here data is included directly into the
   javascript code, such that no external data file needs to be loaded.
   An html graphics hence consists of a single html output file, and
-  viewing it does not require and local server.
+  viewing it does not require a local server.
 - graphics loading data from an external file (.csv, .json, ...): for
   reasons of performance, large data sets should be loaded from
   external files. This, however, complicates things, as html files are
