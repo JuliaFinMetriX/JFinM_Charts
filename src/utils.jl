@@ -18,6 +18,7 @@ function d3SymLink()
     catch e
         print(e)
     end
+    return D3Lib("./d3")
 end
 
 @doc doc"""
@@ -53,5 +54,5 @@ function iframe(src::String; args...)
     end
     iframeCode = """
 <iframe src="$src" $attrs></iframe>"""
-    return iframeCode
+    return NB_Raw_HTML(iframeCode)
 end

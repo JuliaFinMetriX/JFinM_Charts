@@ -34,6 +34,51 @@ There are two different graphics:
 - vizHtml:
 	- create html output file and open in browser
 
+# 
+
+The most robust way to create a graphics is with the following steps:
+- create data
+- create customized chart instance
+- create AbstractD3Viz instance:
+	- requires data and chart
+	- writes data to file / js code: requires data paths / names
+- render AbstractD3Viz instance:
+	- requires output path
+	- requires link to d3 library
+- view rendered output file:
+	- use local http server to view charts with external data files
+
+In addition, however, there exist some shortcuts for frequently used
+settings. They mainly can be splitted into disposable charts and
+output files that need to be kept.
+
+## Disposable charts
+
+For quick visualizations all produced files do not need to be
+retrievable again after viewing the chart. Hence, output file and data
+are written to temporary directories. 
+
+However, temporary directories differ with respect to `D3VizExt` and
+`D3VizEmb` instances, as `D3VizExt` instances come with external data
+and hence their data needs to be accessible from local servers only.
+Writing data to /tmp would require to mount the complete file system
+to localhost. Hence, the default output directory for `D3VizExt`
+charts is ./tmp and may have to be created during function call.
+
+For quick and dirty view, use function viz. This will open the
+respective file in google chrome.
+- viz(data::Any, chrt::AbstractD3Chart) for `D3VizEmb`
+- vizHtml(data::Any, chrt::AbstractD3Chart, lh::LocalHost)
+
+To only view a chart 
+
+- render: create output files
+- viz functions will also automatically open created html file
+
+Possible problems:
+- recycle data
+- fine tune data names
+- offline d3
 
 
 # TODOs

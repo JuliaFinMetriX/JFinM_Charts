@@ -58,13 +58,23 @@ function makeTemplateFunc(chrt::JFinM_Charts.AbstractD3Chart)
     return templateFunc
 end
 
+#############
+## display ##
+#############
+
+import Base.display
+function display(dviz::D3VizExt)
+    println("D3VizExt instance")
+    println("data paths:")
+    display(dviz)
+end
 
 ############
 ## render ##
 ############
 
 function renderCode(dviz::D3VizExt, outPath::String,
-                d3SrcDir::String)
+                d3SrcDir::D3Lib)
 
     outAbsPath = abspath(outPath)
     
@@ -72,9 +82,9 @@ function renderCode(dviz::D3VizExt, outPath::String,
     ##----------------
 
     ## get d3 library path relative to output
-    if !isempty(d3SrcDir)
-        d3SrcDirAbs = abspath(d3SrcDir)
-        d3SrcDir = relpath(d3SrcDirAbs, outAbsPath)
+    if !d3SrcDir.online
+        d3SrcDirAbs = abspath(d3SrcDir.path)
+        d3SrcDir.path = relpath(d3SrcDirAbs, outAbsPath)
     end
 
     ## write code to load d3 library

@@ -26,7 +26,9 @@ path.
 """->
 function defaultDataNames(outAbsPath::String, chrt::MLineChart)
     ## get directory name of output
+    println("$outAbsPath")
     fileStem = split(outAbsPath, ".")[1]
+    println(string(fileStem, "_data.csv"))
     return [string(fileStem, "_data.csv")]
 end
 

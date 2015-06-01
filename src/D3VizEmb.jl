@@ -37,6 +37,14 @@ function D3VizEmb(data::Any, chrt::AbstractD3Chart)
     return D3VizEmb(data, chrt, dataNames)
 end
 
+#############
+## display ##
+#############
+
+import Base.display
+function display(dviz::D3VizEmb)
+    println("D3VizEmb instance")
+end
 
 ############
 ## render ##
@@ -46,7 +54,7 @@ end
 Function render creates returns the full js code, with d3 library path
 relative to the output file.
 """->
-function renderCode(dviz::D3VizEmb, outPath::String, d3SrcDir::String)
+function renderCode(dviz::D3VizEmb, outPath::String, d3SrcDir::D3Lib)
 
     outAbsPath = abspath(outPath)
     
@@ -54,9 +62,9 @@ function renderCode(dviz::D3VizEmb, outPath::String, d3SrcDir::String)
     ##----------------
 
     ## get d3 library path relative to output
-    if !isempty(d3SrcDir)
-        d3SrcDirAbs = abspath(d3SrcDir)
-        d3SrcDir = relpath(d3SrcDirAbs, outAbsPath)
+    if !(d3SrcDir.online)
+        d3SrcDirAbs = abspath(d3SrcDir.path)
+        d3SrcDir.path = relpath(d3SrcDirAbs, dirname(outAbsPath))
     end
     
     ## write code to load d3 library

@@ -20,14 +20,17 @@ VineTreeChart,
 chart,
 d3SymLink,
 iframe,
-renderHtml,
+render,
+viz,
 writeData
 
 include("ChartTypes/vineTreeChart.jl")
 include("ChartTypes/mlineChart.jl")
 include("localhost.jl")
+include("D3Lib.jl")
 include("D3VizEmb.jl")
 include("D3VizExt.jl")
+include("d3viz.jl")
 include("resolvePaths.jl")
 include("abstractFuncs.jl")
 include("utils.jl")
