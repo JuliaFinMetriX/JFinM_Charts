@@ -43,9 +43,9 @@ function renderCode(dviz::AbstractD3Viz,
     return string(d3libCode, fullChartCode)
 end
 
-###################################
-## renderHtml with dviz instance ##
-###################################
+#################
+## render_dviz ##
+#################
 
 @doc doc"""
 Write AbstractD3Viz graphics to html file.

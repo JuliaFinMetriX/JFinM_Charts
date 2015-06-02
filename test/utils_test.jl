@@ -59,7 +59,7 @@ JFinM_Charts.lowerHTML_template()
 ## normpath
 ##---------
 
-normpath("./tmp")
+JFinM_Charts.relToAbs("./tmp")
 
 ## assureDir
 ##----------

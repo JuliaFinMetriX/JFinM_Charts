@@ -73,24 +73,3 @@ d3.select("body")
 """
     return renderCode
 end
-
-## ## handle data
-## ##------------
-
-## @doc doc"""
-## Write data as .csv file. Hence, intended name needs not be modified.
-## """->
-## ## write data to disk
-## function writeData(intendedFname::String, tm::AbstractTimenum,
-##                    chrt::MLineChart)
-##     writeTimedata(intendedFname, tm)
-## end
-
-## @doc doc"""
-## Fix file extension of data file if the path to data was not given
-## manually. 
-## """->
-## function fixExtension(intendedFname::String,
-##                       chrt::MLineChart)
-##     return string(splitext(intendedFname)[1], ".csv")
-## end
