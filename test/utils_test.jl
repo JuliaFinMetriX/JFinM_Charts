@@ -20,9 +20,11 @@ JFinM_Charts.display(kk)
 kk = JFinM_Charts.chart(JFinM_Charts.MLineChart, width=1200)
 kk2 = JFinM_Charts.chart(JFinM_Charts.MLineChart, width=1200)
 kk3 = JFinM_Charts.chart(JFinM_Charts.MLineChart, width=230)
+kk4 = JFinM_Charts.chart(JFinM_Charts.VineTreeChart)
 
 @test isequal(kk, kk2)
 @test !isequal(kk, kk3)
+@test !isequal(kk, kk4)
 
 #######################
 ## Jupyter embedding ##
@@ -53,6 +55,11 @@ JFinM_Charts.lowerHTML_template()
 ############################
 ## resolve path functions ##
 ############################
+
+## normpath
+##---------
+
+normpath("./tmp")
 
 ## assureDir
 ##----------
