@@ -45,32 +45,3 @@ import Base.display
 function display(dviz::D3VizEmb)
     println("D3VizEmb instance")
 end
-
-############
-## render ##
-############
-
-@doc doc"""
-Function render creates returns the full js code, with d3 library path
-relative to the output file.
-"""->
-function renderCode(dviz::D3VizEmb, outPath::String, d3SrcDir::D3Lib)
-
-    outAbsPath = abspath(outPath)
-    
-    ## d3 library code
-    ##----------------
-
-    ## get d3 library path relative to output
-    if !(d3SrcDir.online)
-        d3SrcDirAbs = abspath(d3SrcDir.path)
-        d3SrcDir.path = relpath(d3SrcDirAbs, dirname(outAbsPath))
-    end
-    
-    ## write code to load d3 library
-    d3libCode = dthreeCode(d3SrcDir)
-
-    ## return complete code
-    return string(d3libCode, dviz.code)
-end
-    

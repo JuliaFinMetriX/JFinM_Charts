@@ -69,34 +69,3 @@ function display(dviz::D3VizExt)
     display(dviz)
 end
 
-############
-## render ##
-############
-
-function renderCode(dviz::D3VizExt, outPath::String,
-                d3SrcDir::D3Lib)
-
-    outAbsPath = abspath(outPath)
-    
-    ## d3 library code
-    ##----------------
-
-    ## get d3 library path relative to output
-    if !d3SrcDir.online
-        d3SrcDirAbs = abspath(d3SrcDir.path)
-        d3SrcDir.path = relpath(d3SrcDirAbs, outAbsPath)
-    end
-
-    ## write code to load d3 library
-    d3libCode = dthreeCode(d3SrcDir)
-
-    ## relative data file paths
-    ##-------------------------
-
-    relDataPaths = ASCIIString[relpath(p) for p in dviz.dataPaths]
-
-    fullChartCode = dviz.code(relDataPaths)
-    
-    ## return complete code
-    return string(d3libCode, fullChartCode)
-end

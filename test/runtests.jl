@@ -1,6 +1,8 @@
 module runtests
 
 tests = ["utils_test.jl",
+         "d3lib_test.jl",
+         "d3vizemb_test.jl",
          ## "mlineChart_test.jl",
          ## "jfinm_charts_test.jl",
          ## "resolvePaths_test.jl",

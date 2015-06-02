@@ -1,3 +1,48 @@
+################
+## renderCode ##
+################
+
+@doc doc"""
+Function render creates and returns the full js code when final output
+components like d3 library path and data paths already have been
+determined. Paths will be made relative to the output file.
+
+Output path must be a complete path to a file, not only to the
+containing directory!
+"""->
+function renderCode(dviz::AbstractD3Viz,
+                    outPath::String, d3SrcDir::D3Lib)
+
+    outAbsPath = abspath(outPath)
+    
+    ## d3 library code
+    ##----------------
+
+    ## get d3 library path relative to output
+    if !(d3SrcDir.online)
+        d3SrcDirAbs = abspath(d3SrcDir.path)
+        d3SrcDir.path = relpath(d3SrcDirAbs, dirname(outAbsPath))
+    end
+    
+    ## write code to load d3 library
+    d3libCode = dthreeCode(d3SrcDir)
+
+    ## relative data file paths
+    ##-------------------------
+
+    fullChartCode = ASCIIString[]
+    
+    if isa(dviz, D3VizExt)
+        relDataPaths = ASCIIString[relpath(p) for p in dviz.dataPaths]
+        fullChartCode = dviz.code(relDataPaths)
+    else
+        fullChartCode = dviz.code
+    end
+
+    ## return complete code
+    return string(d3libCode, fullChartCode)
+end
+
 ###################################
 ## renderHtml with dviz instance ##
 ###################################
@@ -208,5 +253,5 @@ function viz(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib)
     dviz = D3VizEmb(data, chrt, dataPaths)
     render_dviz(dviz, outAbsPath, d3lib)
     run(`google-chrome $outAbsPath`)
-    return (outAbsPath, dviz)
+    return outAbsPath
 end
