@@ -13,15 +13,18 @@ end
 ## Constructors ##
 ##################
 
+@doc doc"""
+Get final js code without output paths. If data is [], the code will
+not entail any part for data, but will use data defined somewhere
+else. Probably does not make sense anymore, as I do not write charts
+directly to notebook files, but embed them as html files with one html
+file per chart. 
+"""->
 function D3VizEmb(data::Any, chrt::AbstractD3Chart,
                   dataNames::Array{ASCIIString, 1})
     dataCode = ""
-    if !isempty(data)
-        if !isempty(dataNames)
-            dataCode = writeData(data, chrt, dataNames)
-        else
-            dataCode, dataNames = writeData(data, chrt)
-        end
+    if !isa(data, Array{None, 1})
+        dataCode = writeData(data, chrt, dataNames)
     end
     code = string(jsCode(chrt.jsCodePath),
                   customChart(chrt),

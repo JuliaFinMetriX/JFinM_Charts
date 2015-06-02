@@ -54,12 +54,6 @@ end
 ## handle data
 ##------------
 
-## call data with default js variable name
-function writeData(data::Array{Int, 2}, chrt::VineTreeChart)
-    ## create JavaScript data with default name
-    return writeData(data, chrt, ["treeArrayData"])
-end
-
 ## call data with given js variable name
 function writeData(data::Array{Int, 2},
                    chrt::VineTreeChart,
