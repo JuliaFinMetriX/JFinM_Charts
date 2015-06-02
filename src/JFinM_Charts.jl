@@ -30,8 +30,8 @@ include("localhost.jl")
 include("D3Lib.jl")
 include("D3VizEmb.jl")
 include("D3VizExt.jl")
-include("d3viz.jl")
 include("utils.jl")
+include("d3viz.jl")
 
 ## generic chart constructor
 ##--------------------------

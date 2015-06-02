@@ -74,6 +74,7 @@ JFinM_Charts.assureDir(testPath)
 ## delete directory again
 rm(testPath)
 @test !isdir(testPath)
+println("Created paths were deleted again.")
 
 ## data file extension
 ##--------------------

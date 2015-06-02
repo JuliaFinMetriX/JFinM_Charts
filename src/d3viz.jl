@@ -255,3 +255,39 @@ function viz(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib)
     run(`google-chrome $outAbsPath`)
     return outAbsPath
 end
+
+###########
+## embed ##
+###########
+
+@doc doc"""
+Directly embeds the html chart into the notebook file, but
+additionally stores some information about output and data file paths.
+"""->
+type D3Embedded
+    htmlChart::NB_Raw_HTML
+    htmlPath::ASCIIString
+    dataPaths::Array{ASCIIString, 1}
+end
+
+import Base.writemime
+function writemime(io::IO, ::MIME"text/html", x::D3Embedded)
+    print(io, x.htmlChart.s)
+end
+
+function embed(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib; args...)
+    ## create output path
+    randPart = tempname()
+    outAbsPath = string(".", randPart, "_", chrt.chartType, ".html")
+    ## get data paths
+    dataPaths = defaultDataNames(chrt)
+    dviz = []
+    if chrt.extData
+        dviz = D3VizExt(data, chrt, dataPaths)
+    else
+        dviz = D3VizEmb(data, chrt, dataPaths)
+    end
+    render_dviz(dviz, outAbsPath, d3lib)
+
+    return D3Embedded(iframe(outAbsPath; args...), outAbsPath, dataPaths)
+end

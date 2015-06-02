@@ -23,4 +23,15 @@ for t in tests
     include(string(Pkg.dir("JFinM_Charts"), "/test/", t))
 end
 
+println("Removing testing directories:")
+
+## clean up
+dirToDel = string(Pkg.dir("JFinM_Charts"), "/test/tmp_charts")
+rm(dirToDel, recursive=true)
+println("$dirToDel deleted")
+
+symlinkToDel = string(Pkg.dir("JFinM_Charts"), "/test/d3")
+rm(symlinkToDel, recursive=true)
+println("$symlinkToDel deleted")
+
 end
