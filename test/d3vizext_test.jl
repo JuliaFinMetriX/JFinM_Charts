@@ -17,7 +17,8 @@ chrt = JFinM_Charts.chart(JFinM_Charts.MLineChart)
 dats = [Date(2014, 03, ii) for ii=1:30]
 data = Timematr(rand(30, 1), dats)
 
-dviz = JFinM_Charts.D3VizExt(data, chrt)
+dviz = JFinM_Charts.D3VizExt(data, chrt,
+                             ["/tmp/JFinM_Charts_test.csv"])
 
 ## display
 ##--------

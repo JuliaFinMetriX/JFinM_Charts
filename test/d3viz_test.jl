@@ -8,7 +8,7 @@ vn = [0 2 3;
       1 0 1;
       1 1 0]
 
-dviz = JFinM_Charts.D3VizEmb(vn, chrt)
+dviz = JFinM_Charts.D3VizEmb(vn, chrt, ["/tmp/JFinM_Charts_test.html"])
 
 
 ## renderCode

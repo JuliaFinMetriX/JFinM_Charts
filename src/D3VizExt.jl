@@ -36,15 +36,6 @@ function D3VizExt(data::Any, chrt::JFinM_Charts.AbstractD3Chart,
     return D3VizExt(tmplFunc, dataPaths)
 end
 
-
-@doc doc"""
-Write data to default file path.
-"""->
-function D3VizExt(data::Any, chrt::JFinM_Charts.AbstractD3Chart)
-    ## create default tmp file
-    ## call D3Viz with data file path argument
-end
-
 @doc doc"""
 dataPaths will be an Array, even if only a single data set is
 required. 
@@ -66,6 +57,6 @@ import Base.display
 function display(dviz::D3VizExt)
     println("D3VizExt instance")
     println("data paths:")
-    display(dviz)
+    display(dviz.dataPaths)
 end
 

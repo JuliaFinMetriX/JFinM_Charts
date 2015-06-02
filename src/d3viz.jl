@@ -247,7 +247,7 @@ function viz(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib)
     end
     ## create output path
     randPart = tempname()
-    outAbsPath = string(randPart, "_", chrt.chartType, ".html")
+    outAbsPath = string(".", randPart, "_", chrt.chartType, ".html")
     ## get data paths
     dataPaths = defaultDataNames(chrt)
     dviz = D3VizEmb(data, chrt, dataPaths)

@@ -32,14 +32,6 @@ function D3VizEmb(data::Any, chrt::AbstractD3Chart,
     return D3VizEmb(string(dataCode, code))
 end
 
-@doc doc"""
-Use default name for javascript chart data.
-"""->
-function D3VizEmb(data::Any, chrt::AbstractD3Chart)
-    dataNames = defaultDataNames(chrt)
-    return D3VizEmb(data, chrt, dataNames)
-end
-
 #############
 ## display ##
 #############

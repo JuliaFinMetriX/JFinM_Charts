@@ -14,10 +14,6 @@ vn = [0 2 3;
 
 outputPath = "./tmp_charts/testFile.html"
 
-## with data and charts
-dviz = JFinM_Charts.D3VizEmb(vn, chrt)
-JFinM_Charts.render_dviz(dviz, outputPath, JFinM_Charts.D3Lib())
-
 ## with already given data
 dviz = JFinM_Charts.D3VizEmb([], chrt, ["myOwnArrayName"])
 JFinM_Charts.render_dviz(dviz, outputPath, JFinM_Charts.D3Lib())
