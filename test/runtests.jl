@@ -3,6 +3,7 @@ module runtests
 tests = ["utils_test.jl",
          "d3lib_test.jl",
          "d3vizemb_test.jl",
+         "d3vizext_test.jl",
          "d3viz_test.jl",
          ## "jfinm_charts_test.jl",
          ## "JFinM_Charts_usage.jl",
