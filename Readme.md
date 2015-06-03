@@ -83,6 +83,30 @@ Possible problems:
 - fine tune data names
 - offline d3
 
+# render
+
+To permanently store html output on file. Hence, the output path is a
+mandatory input (for disposable charts with default output path use
+viz or embed).
+
+- render(data::Any, chrt::AbstractD3Chart,
+  outPath::String, dataNames::Array{ASCIIString, 1},
+  d3Src::D3Lib)
+- render(data::Any, chrt::AbstractD3Chart, outPath::String, d3lib::D3Lib)
+- render(data::Any, chrt::AbstractD3Chart, outPath::String)
+
+# viz
+
+- viz(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib, lh::LocalHost)
+- viz(data::Any, chrt::AbstractD3Chart, lh::LocalHost)
+- vizLh(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib)
+- viz(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib)
+- viz(data::Any, chrt::AbstractD3Chart)
+
+# embed
+
+- embed(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib; args...)
+- embed(data::Any, chrt::AbstractD3Chart; args...)
 
 # TODOs
 - handle javascript graphics (requires to write code directly to

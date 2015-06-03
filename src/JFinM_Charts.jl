@@ -11,6 +11,7 @@ abstract AbstractD3Viz
 
 export #
 AbstractD3Chart,
+D3Lib,
 LocalHost,
 ## chart types
 MLineChart,
@@ -19,9 +20,10 @@ VineTreeChart,
 ## additional functions
 chart,
 d3SymLink,
-iframe,
+embed,
 render,
 viz,
+vizLh,
 writeData
 
 include("ChartTypes/vineTreeChart.jl")

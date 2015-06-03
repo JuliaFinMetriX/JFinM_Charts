@@ -19,13 +19,20 @@ function renderCode(dviz::AbstractD3Viz,
     ##----------------
 
     ## get d3 library path relative to output
+    d3libCode = ""
     if !(d3SrcDir.online)
         d3SrcDirAbs = abspath(d3SrcDir.path)
-        d3SrcDir.path = relpath(d3SrcDirAbs, dirname(outAbsPath))
+        newRelPath = relpath(d3SrcDirAbs, dirname(outAbsPath))
+
+        newD3SrcDir = D3Lib(newRelPath, false)
+
+        ## write code to load d3 library
+        d3libCode = dthreeCode(newD3SrcDir)
+    else
+        ## write code to load d3 library
+        d3libCode = dthreeCode(d3SrcDir)
     end
     
-    ## write code to load d3 library
-    d3libCode = dthreeCode(d3SrcDir)
 
     ## relative data file paths
     ##-------------------------
@@ -114,6 +121,14 @@ function render(data::Any, chrt::AbstractD3Chart,
     return render_dviz(dviz, outPath, d3Src)
 end
 
+function render(data::Any, chrt::AbstractD3Chart,
+                outPath::String,
+                dataNames::Array{ASCIIString, 1})
+    d3Src = D3Lib()
+    return render(data, chrt, outPath, dataNames, d3Src)
+end
+
+
 ## using default settings
 ##-----------------------
 
@@ -197,63 +212,37 @@ function viz(data::Any, chrt::AbstractD3Chart,
     return outAbsPath
 end
 
-## without localhost: only D3VizEmb
-##---------------------------------
+function viz(data::Any, chrt::AbstractD3Chart, lh::LocalHost)
+    d3lib = D3Lib()
+    viz(data, chrt, d3lib, lh)
+end
+
+## without localhost
+##------------------
+
+function vizLh(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib)
+    ## create dummy localhost
+    lh = LocalHost()
+    viz(data, chrt, d3lib, lh)
+end
 
 function viz(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib)
     if chrt.extData
         error("D3VizExt charts need to be called with localhost instance.")
     end
-    ## create dummy localhost
-    lh = LocalHost()
-    viz(data, chrt, d3lib, lh)
+
+    ## create html file
+    outAbsPath = d3RndFile(data, chrt)
+    render(data, chrt, outAbsPath, d3lib)
+
+    run(`google-chrome $outAbsPath`)
+    return outAbsPath
 end
 
 ## online d3 library, only D3VizEmb without localhost
 function viz(data::Any, chrt::AbstractD3Chart)
     d3lib = D3Lib()
     viz(data, chrt, d3lib)
-end
-
-## with localhost
-##---------------
-
-## online d3 library, only D3VizEmb without localhost
-function viz(data::Any, chrt::AbstractD3Chart, lh::LocalHost)
-    d3lib = D3Lib()
-    viz(data, chrt, d3lib, lh)
-end
-
-#############
-## vizHtml ##
-#############
-
-@doc doc"""
-viz will create a disposable chart. It is mainly written for usage
-from the console, as charts would need to be saved to disk and
-embedded in jupyter. Still, the default output path differs for
-D3VizExt and D3VizEmb.
-
-D3VizEmb consists of a single file only, and can be viewed without any
-server. Hence, it will be written to /tmp by default.
-
-D3VizExt, however, will create files that need to be accessible by a
-local server. As /tmp usually is not a subdirectory of the local
-server, the default path will be ./tmp.
-"""->
-function viz(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib)
-    if chrt.extData
-        error("D3VizExt charts need to be called with localhost instance.")
-    end
-    ## create output path
-    randPart = tempname()
-    outAbsPath = string(".", randPart, "_", chrt.chartType, ".html")
-    ## get data paths
-    dataPaths = defaultDataNames(chrt)
-    dviz = D3VizEmb(data, chrt, dataPaths)
-    render_dviz(dviz, outAbsPath, d3lib)
-    run(`google-chrome $outAbsPath`)
-    return outAbsPath
 end
 
 ###########
@@ -290,4 +279,9 @@ function embed(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib; args...)
     render_dviz(dviz, outAbsPath, d3lib)
 
     return D3Embedded(iframe(outAbsPath; args...), outAbsPath, dataPaths)
+end
+
+function embed(data::Any, chrt::AbstractD3Chart; args...)
+    d3lib = D3Lib()
+    return embed(data, chart, d3lib; args...)
 end
