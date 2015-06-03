@@ -40,7 +40,8 @@ function renderCode(dviz::AbstractD3Viz,
     fullChartCode = ASCIIString[]
     
     if isa(dviz, D3VizExt)
-        relDataPaths = ASCIIString[relpath(p) for p in dviz.dataPaths]
+        relDataPaths = ASCIIString[relpath(p, dirname(outAbsPath)) for
+                                   p in dviz.dataPaths] 
         fullChartCode = dviz.code(relDataPaths)
     else
         fullChartCode = dviz.code
@@ -113,6 +114,8 @@ function render(data::Any, chrt::AbstractD3Chart,
                 outPath::String,
                 dataNames::Array{ASCIIString, 1},
                 d3Src::D3Lib)
+    outAbsPath = abspath(outPath)
+    
     dviz = []
     if chrt.extData
         dviz = D3VizExt(data, chrt, dataNames)
@@ -120,14 +123,15 @@ function render(data::Any, chrt::AbstractD3Chart,
         dviz = D3VizEmb(data, chrt, dataNames)
     end
 
-    return render_dviz(dviz, outPath, d3Src)
+    return render_dviz(dviz, outAbsPath, d3Src)
 end
 
 function render(data::Any, chrt::AbstractD3Chart,
                 outPath::String,
                 dataNames::Array{ASCIIString, 1})
+    outAbsPath = abspath(outPath)
     d3Src = D3Lib()
-    return render(data, chrt, outPath, dataNames, d3Src)
+    return render(data, chrt, outAbsPath, dataNames, d3Src)
 end
 
 
@@ -154,16 +158,17 @@ function render(data::Any, chrt::AbstractD3Chart,
     if isa(data, Array{None, 1})
         error("data must not be empty if no data file paths are specified.")
     end
+    outAbsPath = abspath(outPath)
 
     ## get default data paths
     if chrt.extData
-        absDataPaths = defaultDataNames(outPath, chrt)
+        absDataPaths = defaultDataNames(outAbsPath, chrt)
         dataPaths = ASCIIString[relpath(p, pwd()) for p in absDataPaths]
     else
         dataPaths = defaultDataNames(chrt)
     end
     
-    return render(data, chrt, outPath, dataPaths, d3lib)
+    return render(data, chrt, outAbsPath, dataPaths, d3lib)
 end
 
 ## with default d3 path
@@ -257,7 +262,8 @@ additionally stores some information about output and data file paths.
 """->
 type D3Embedded
     htmlChart::NB_Raw_HTML
-    htmlPath::ASCIIString
+    absHtmlPath::ASCIIString
+    relHtmlPath::ASCIIString
     dataPaths::Array{ASCIIString, 1}
 end
 
@@ -267,21 +273,24 @@ function writemime(io::IO, ::MIME"text/html", x::D3Embedded)
 end
 
 function embed(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib;
-               width = 800, height = 400, args...)
+               width = 800, height = 700, args...)
 
     ## create html file
     outAbsPath = d3RndFile(data, chrt)
     dviz = render(data, chrt, outAbsPath, d3lib)
 
-    dataPaths = "embedded data"
+    dataPaths = ["embedded data"]
     if isa(dviz, D3VizExt)
         dataPaths = dviz.dataPaths
     end
+
+    ## get path relative to current directory
+    outRelPath = relpath(outAbsPath, pwd())
     
-    return D3Embedded(iframe(outAbsPath;
+    return D3Embedded(iframe(outRelPath;
                              width=width,
                              height=height,
-                             args...), outAbsPath, dataPaths)
+                             args...), outAbsPath, outRelPath, dataPaths)
 end
 
 function embed(data::Any, chrt::AbstractD3Chart; args...)
