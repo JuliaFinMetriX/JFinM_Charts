@@ -156,7 +156,7 @@ function render(data::Any, chrt::AbstractD3Chart,
     ## get default data paths
     if chrt.extData
         absDataPaths = defaultDataNames(outPath, chrt)
-        dataPaths = ASCIIString[relpath(outPath, dirname(p)) for p in absDataPaths]
+        dataPaths = ASCIIString[relpath(p, dirname(pwd())) for p in absDataPaths]
     else
         dataPaths = defaultDataNames(chrt)
     end
@@ -264,24 +264,25 @@ function writemime(io::IO, ::MIME"text/html", x::D3Embedded)
     print(io, x.htmlChart.s)
 end
 
-function embed(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib; args...)
-    ## create output path
-    randPart = tempname()
-    outAbsPath = string(".", randPart, "_", chrt.chartType, ".html")
-    ## get data paths
-    dataPaths = defaultDataNames(chrt)
-    dviz = []
-    if chrt.extData
-        dviz = D3VizExt(data, chrt, dataPaths)
-    else
-        dviz = D3VizEmb(data, chrt, dataPaths)
-    end
-    render_dviz(dviz, outAbsPath, d3lib)
+function embed(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib;
+               width = 800, height = 400, args...)
 
-    return D3Embedded(iframe(outAbsPath; args...), outAbsPath, dataPaths)
+    ## create html file
+    outAbsPath = d3RndFile(data, chrt)
+    dviz = render(data, chrt, outAbsPath, d3lib)
+
+    dataPaths = "embedded data"
+    if isa(dviz, D3VizExt)
+        dataPaths = dviz.dataPaths
+    end
+    
+    return D3Embedded(iframe(outAbsPath;
+                             width=width,
+                             height=height,
+                             args...), outAbsPath, dataPaths)
 end
 
 function embed(data::Any, chrt::AbstractD3Chart; args...)
     d3lib = D3Lib()
-    return embed(data, chart, d3lib; args...)
+    return embed(data, chrt, d3lib; args...)
 end

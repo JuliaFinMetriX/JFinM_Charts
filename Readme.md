@@ -108,6 +108,11 @@ viz or embed).
 - embed(data::Any, chrt::AbstractD3Chart, d3lib::D3Lib; args...)
 - embed(data::Any, chrt::AbstractD3Chart; args...)
 
+# TODO: file paths
+- get absolute data path
+- write data to absolute path (or relative to current directory)
+- write data path relative to html file in html file
+
 # TODOs
 - handle javascript graphics (requires to write code directly to
   notebook via writemime and initCanvas function)
