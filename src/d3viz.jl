@@ -106,6 +106,8 @@ end
 @doc doc"""
 Most general function to allow setting of all components. If data is
 empty, data files will be recycled.
+
+Data paths may be absolute paths or relative to current directory!
 """->
 function render(data::Any, chrt::AbstractD3Chart,
                 outPath::String,
@@ -156,7 +158,7 @@ function render(data::Any, chrt::AbstractD3Chart,
     ## get default data paths
     if chrt.extData
         absDataPaths = defaultDataNames(outPath, chrt)
-        dataPaths = ASCIIString[relpath(p, dirname(pwd())) for p in absDataPaths]
+        dataPaths = ASCIIString[relpath(p, pwd()) for p in absDataPaths]
     else
         dataPaths = defaultDataNames(chrt)
     end
